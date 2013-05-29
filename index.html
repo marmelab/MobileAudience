@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+  <title>Audience TV</title>
+  <meta name="viewport" id="viewport" content="initial-scale=1.0, width=device-width, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes">
+
+  <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <!-- Set Apple icons for when prototype is saved to home screen -->
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="touch-icons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="touch-icons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="touch-icons/apple-touch-icon-57x57.png">
+
+  <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+  <link href="css/styles.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+<style type="text/css" rel="stylesheet" media="screen" id="ad_style"></style>
+<style type="text/css" rel="stylesheet" media="screen" id="tile_style"></style>
+
+<div class="fixed">
+  <div class="navbar header">
+    <h1 class="navbar-brand">Audience TV</h1>
+
+    <div class="btn-group pull-right">
+      <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown">
+        Catégories <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#" data-category="ni_4">Audience des 4 ans et plus</a></li>
+        <li><a href="#" data-category="pda_4">Part d'audience des 4 ans et plus</a></li>
+        <li><a href="#" data-category="ni_frda">Audience Femme RDA</a></li>
+        <li><a href="#" data-category="pda_frda">Part d'audience Femme RDA</a></li>
+
+        <li><a href="#" data-category="no_ad">Cacher les pubs</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="outerFooter">
+    <div class="navbar footer"></div>
+  </div>
+
+</div>
+
+ <div class="content slider">
+    <ul class="loading">
+    </ul>
+ </div>
+
+<div class="modal" id="programDetails">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal" aria-hidden="true">Fermer</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <p></p>
+
+        <div class="shareMarket"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/lib/jquery-2.0.0.min.js"></script>
+<script src="js/lib/fastclick.js"></script>
+<script src="js/lib/bootstrap.min.js"></script>
+<script src="js/lib/jquery.hammer.min.js"></script>
+<script src="js/lib/jquery.nodoubletapzoom.js"></script>
+<script src="js/lib/d3.js"></script>
+<script src="js/lib/detect-zoom.min.js"></script>
+<script src="js/lib/modernizr.js"></script>
+<script src="js/lib/viewport-size.js"></script>
+<script src="js/Carousel.js"></script>
+<script src="js/FixedElement.js"></script>
+
+<script src="js/app.js"></script>
+</body>
+</html>

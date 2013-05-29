@@ -1,0 +1,138 @@
+.fixed {
+  pointer-events:none;
+  position:absolute;
+  width: 100%;
+  height: 100%;
+
+  z-index: 1000;
+  margin: 0;
+  padding: 5px;
+  left:0;
+  top: 0;
+
+  display: none;
+}
+
+.fixed .navbar {
+  left: 0;
+  margin: 3px;
+}
+.fixed .navbar.header {
+  pointer-events:visible;
+  padding: 5px 10px 5px 15px;
+  box-shadow: 3px 2px 9px 0px rgba(0,0,0,0.1);
+}
+
+.outerFooter {
+  display:inline-block;
+  position:absolute;
+  left:50%;
+  bottom: 15px;
+  width: 300px;
+}
+
+.fixed .navbar.footer {
+  padding: 5px 10px 5px 15px;
+  position:relative;
+  left:-50%;
+  text-align: center;
+  display: none;
+  box-shadow: 3px 2px 9px 0px rgba(0,0,0,0.1);
+}
+
+.navbar h1 {
+  float: left;
+  padding: 7px 0 0 0;
+  margin: 0;
+}
+
+.content {
+  margin-top: 60px;
+}
+
+.slider ul {
+  margin-left: 0;
+  list-style-type: none;
+  height: 100%;
+}
+
+.slider ul.loading, .slider li.loading {
+  background: #fff url(../img/ajax-loader.gif) no-repeat center 30%;
+}
+
+#programDetails.modal {
+  position: absolute;
+}
+
+#programDetails .modal-dialog {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  margin-left: 0;
+  z-index: 2000;
+}
+
+.modal-backdrop {
+  opacity: 0.8;
+  background-color: #333;
+}
+
+.slider {
+  overflow: hidden;
+  width:100%;
+  height: 100%;
+}
+
+.slider li {
+  height: 100%;
+  float: left;
+}
+
+.hourLine {
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  background: red;
+
+  z-index: 501;
+}
+
+.hourLineValue {
+  position: absolute;
+  color: red;
+
+  z-index: 501;
+}
+
+.axis, .axis span, .programTitle, .selectBox, .programName {
+  position: absolute;
+}
+
+.tile {
+  -o-transition: background-color .3s ease-out;
+  -moz-transition: background-color .3s ease-out;
+  -webkit-transition: background-color .3s ease-out;
+  transition: background-color .3s ease-out;
+}
+
+.tile.selected {
+  background-color: #ffffcc!important;
+}
+
+.tile.ad {
+  z-index: 500;
+  border: none;
+  box-shadow: 3px 2px 9px 0px rgba(0,0,0,0.1);
+  border-radius: 2px;
+}
+
+.programName {
+  text-align: center;
+  font-size: 3px;
+  display: none;
+  z-index: 502;
+  font-weight: bold;
+}
+.axis span {
+  text-align: center;
+}
