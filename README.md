@@ -17,6 +17,8 @@ Is it possible to use the power of D3.js to manipulate visually attractive and i
 Discoveries
 -----------
 
+Read a detailed feedback on the development of this prototype on our blog: [Building Sophisticated WebApps For Mobile: A Bumpy Ride](http://blog.marmelab.com/building-sophisticated-webapps-for-mobile-a-bumpy-ride).
+
 * Don't use SVG on D3.js. Performance is abysmall on Mobile devices. Instead, use HTML (divs) and CSS.
 * Don't try to reimplement zoom using iScroll. Performance is poor on old mobile devices, and on heavy pages. Instead, rely on native zoom.
 * Use fastclick to get a more responsive app
