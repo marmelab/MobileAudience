@@ -5,14 +5,14 @@
 function Carousel(element)
 {
 	var self          = this;
-	element           = $(element);
-	var container     = null
+	var container     = null;
 	var panes         = null;
 	var pane_width    = 0;
 	var pane_count    = null;
 	var current_pane  = 0;
-
 	var enabled       = true;
+
+    element           = $(element);
 
 	/**
 	 * initial
@@ -68,7 +68,6 @@ function Carousel(element)
 		return this;
 	};
 
-
 	/**
 	 * show pane by index
 	 * @param   {Number}    index
@@ -91,19 +90,16 @@ function Carousel(element)
 			cancelable: true
 		});
 
-		container.trigger(e);
+		container[0].dispatchEvent(e);
 	};
 
 
-	function setContainerOffset(percent, animate) {
+	function setContainerOffset(percent) {
 		if(!container){
 			return;
 		}
 
-		/*if(Modernizr.csstransforms3d) {
-			container.css("transform", "translate3d("+ percent +"%,0,0) scale3d(1,1,1)");
-		}
-		else */if(Modernizr.csstransforms) {
+		if(Modernizr.csstransforms) {
 			container.css("transform", "translate("+ percent +"%,0)");
 		}
 		else {
@@ -136,8 +132,6 @@ function Carousel(element)
 					drag_offset *= .4;
 				}
 
-
-
 				setContainerOffset(drag_offset + pane_offset);
 				break;
 
@@ -155,6 +149,7 @@ function Carousel(element)
 
 				// more then 50% moved, navigate
 				var offset = Math.abs(ev.gesture.deltaX);
+
 				if(offset > pane_width/2) {
 					if(ev.gesture.direction == 'right') {
 						self.prev();
@@ -164,6 +159,7 @@ function Carousel(element)
 				}else {
 					self.showPane(current_pane, true);
 				}
+
 				break;
 		}
 	}

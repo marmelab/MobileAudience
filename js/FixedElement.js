@@ -74,7 +74,7 @@ FixedElement.prototype.handleTouchMove = function(e){
 FixedElement.prototype.handleDeviceMotion = function(e) {
 	// Retrieve acceleration axis depending of the orientation
 	var axis = window.orientation == 0 ? 'x' : 'y';
-	var acceleration = e.accelerationIncludingGravity[axis]
+	var acceleration = e.accelerationIncludingGravity[axis];
 
 	// Coerce the acceleration value
 	var diff = Math.abs(7-Math.abs(acceleration));
@@ -85,13 +85,13 @@ FixedElement.prototype.handleDeviceMotion = function(e) {
 	}else if (diff > 3) {
 		this.show();
 	}
-}
+};
 
 FixedElement.prototype.handlePinch = function(e){
 	if(!this.isZooming){
 		// Trigger events
 		var event = new CustomEvent('zoomStart');
-		this.element.trigger(event);
+        this.element[0].dispatchEvent(event);
 	}
 
 	this.isZooming = true;
@@ -123,7 +123,7 @@ FixedElement.prototype.applyChanges = function(force){
 
 	// Trigger events
 	var event = new CustomEvent('zoomEnd', {detail: {scale: this.lastScale}});
-	this.element.trigger(event);
+    this.element[0].dispatchEvent(event);
 
 	this.setPosition(1/this.lastScale, left * this.lastScale, top * this.lastScale);
 
@@ -132,16 +132,16 @@ FixedElement.prototype.applyChanges = function(force){
 	this.isZooming      = false;
 
 	this.show();
-}
+};
 
+/**
+ *
+ * @param {Number} scale
+ * @param {Number} x
+ * @param {Number} y
+ */
 FixedElement.prototype.setPosition = function(scale, x, y){
 	this.element
 			.css('transform-origin', 'left top')
-			.css('transform', 'scale('+scale+') translate('+x+'px, '+y+'px)');
-};
-
-FixedElement.prototype.resetTransformations = function(){
-	this.element
-			.css('transform-origin', '')
-			.css('transform', '');
+			.css('transform', 'scale(' + scale + ') translate(' + x + 'px, ' + y + 'px)');
 };

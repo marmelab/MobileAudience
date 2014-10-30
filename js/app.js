@@ -18,7 +18,7 @@ fixedElement.on('zoomStart', function(){
 });
 
 fixedElement.on('zoomEnd', function(e){
-	var scale = e.detail.scale;
+    var scale = e.detail ? e.detail.scale : e.originalEvent.detail.scale;
 
 	fixedElement.height(getViewport()[1] * scale);
 
@@ -61,7 +61,9 @@ var currentDimension  = Object.keys(dimensions)[0];
 var allChannels       = ['TV1', 'TF2', 'TF3', 'D-', 'N5', 'ctrl+R', 'TEAR', 'Z8'];
 
 $('.slider').on('slide', function(e){
-	if(e.detail.slideNumber == currentDay){
+    var slideNumber = e.detail ? e.detail.slideNumber : e.originalEvent.detail.slideNumber;
+
+	if(slideNumber == currentDay){
 		$('#loader').hide();
 		return;
 	}
@@ -73,7 +75,7 @@ $('.slider').on('slide', function(e){
 	d3.select('.content li:nth-child('+(currentDay + 1)+') div.content-padded div.chartContainer').remove();
 
 	// Set new day
-	currentDay = e.detail.slideNumber;
+	currentDay = slideNumber;
 	var dayData = coerceData( getDayData(fullData, currentDay) );
 
 	$('.content li:eq('+(currentDay)+')').addClass('loading');
@@ -81,7 +83,6 @@ $('.slider').on('slide', function(e){
 	// Display new day's data
 	redraw(dayData, currentDimension, currentDay);
 });
-
 
 window.addEventListener( "orientationchange", handleOrientationChange, false);
 
@@ -94,7 +95,6 @@ function handleOrientationChange(e){
 	redraw(dayData, currentDimension, currentDay);
 
 	carousel.setPaneDimensions();
-
 
 	// Redraw details svg ?
 	if($('#programDetails.in').length){
@@ -118,8 +118,8 @@ function handleOrientationChange(e){
 
 /**
  * Return audience data for a given day
- * @param Array data
- * @param Number iDay
+ * @param {Array} data
+ * @param {Number} iDay
  * @returns Array
  */
 var getDayData = function(data, iDay){
@@ -143,7 +143,7 @@ var coerceData = function(data) {
 };
 
 /**
- * Return time like 00:00:00 as a number of millisecond
+ * Return time like 00:00:00 as a {Number} of millisecond
  * @param duration
  * @returns {number}
  */
@@ -153,9 +153,9 @@ var parseDuration = function(duration) {
 
 /**
  * Draw main SVG
- * @param Array data
- * @param string dimension
- * @param Integer day
+ * @param {Array}  data
+ * @param {String} dimension
+ * @param {Number} day
  */
 var redraw = function(data, dimension, day) {
 	if(!data.length){
@@ -165,7 +165,6 @@ var redraw = function(data, dimension, day) {
 	dimension         = dimension || 'ni_4';
 	currentDimension  = dimension;
 	day               = day || 0;
-
 
 	// Get main dimensions
 	var calculatedWidth = $('body').width();
@@ -289,7 +288,7 @@ var redraw = function(data, dimension, day) {
 
 	// remove emty spans to lighten the dom
 	programNames.filter('.ad').remove();
-	
+
 	// remove previous elements
 	d3.select('.axis').remove();
 
@@ -335,7 +334,6 @@ var redraw = function(data, dimension, day) {
 	$('.content li:eq('+(day-1)+'), .content li:eq('+(day+1)+')').addClass('loading');
 	$('.content li:eq('+(day)+')').removeClass('loading');
 
-
 	handleProgramNameVisibility(window.detectZoom.zoom());
 
 	fixed.applyChanges(true);
@@ -344,10 +342,13 @@ var redraw = function(data, dimension, day) {
 
 /**
  * Check the zoom level to hide or show programs name
+ *
+ * @param {Number} scale
  */
 function handleProgramNameVisibility(scale) {
 	var isZoomedIn = getViewport()[0] < 180;
-	var tileStyle   = document.getElementById('tile_style');
+	var tileStyle  = document.getElementById('tile_style');
+
 	if (isZoomedIn) {
 		tileStyle.innerHTML = ".programName { display: block; } .tile:not(.ad) { outline: solid white 1px; }";
 	} else {
@@ -356,7 +357,7 @@ function handleProgramNameVisibility(scale) {
 }
 
 d3.json("data/grille-full.json", function(data) {
-	// Store all datas
+	// Store all data
 	fullData = data;
 	var dayData = coerceData( getDayData(data, currentDay) );
 
@@ -380,7 +381,7 @@ d3.json("data/grille-full.json", function(data) {
 
 /**
  * Returns true if a program is an advertisement
- * @param String name
+ * @param {String} name
  * @returns boolean
  */
 function isAd(name){
@@ -436,8 +437,6 @@ function displayDetails(event){
 	var left        = $(window).scrollLeft();
 	var viewport    = getViewport();
 
-
-
 	details
 			.css('width', viewport[0] * scale)
 			.css('height', viewport[1] * scale)
@@ -460,7 +459,6 @@ function displayDetails(event){
 	);
 
 	// Retrieve all channels data for this day & dimension
-	var channel = programData.channel;
 	var aChannels = allChannels.slice(0);
 
 	// Put the current channel first
@@ -528,9 +526,9 @@ function displayDetails(event){
 
 /**
  * Display a stacked chart with channels data
- * @param DOMElement details
- * @param Object rawDayData
- * @param Object programData
+ * @param {DOMElement} details
+ * @param {Object} rawDayData
+ * @param {Object} programData
  */
 function displayMarketShare(details, rawDayData, programData){
 	// Retrieve program & svg data
@@ -573,11 +571,11 @@ function displayMarketShare(details, rawDayData, programData){
 
 /**
  *
- * @param DOMElement details
- * @param Array aAllData
- * @param Array aBefore
- * @param Array aProgram
- * @param Array aAfter
+ * @param {DOMElement} details
+ * @param {Array} aAllData
+ * @param {Array} aBefore
+ * @param {Array} aProgram
+ * @param {Array} aAfter
  */
 function redrawMarketShares(details, aAllData, aBefore, aProgram, aAfter){
 	// SVG dimension
@@ -604,7 +602,6 @@ function redrawMarketShares(details, aAllData, aBefore, aProgram, aAfter){
 
 		return max;
 	})]).range([height, 0]);
-
 
 	// Remove old svg
 	d3.select('#programDetails div.shareMarket svg').remove();
