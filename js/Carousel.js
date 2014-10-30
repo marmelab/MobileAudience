@@ -4,167 +4,163 @@
  */
 function Carousel(element)
 {
-	var self          = this;
-	element           = $(element);
-	var container     = null
-	var panes         = null;
-	var pane_width    = 0;
-	var pane_count    = null;
-	var current_pane  = 0;
+    var self          = this;
+    var container     = null;
+    var panes         = null;
+    var pane_width    = 0;
+    var pane_count    = null;
+    var current_pane  = 0;
+    var enabled       = true;
 
-	var enabled       = true;
+    element           = $(element);
 
-	/**
-	 * initial
-	 */
-	this.init = function() {
-		container     = $(">ul", element);
-		panes         = $(">ul>li", element);
-		pane_width    = 0;
-		pane_count    = panes.length;
-		current_pane  = 0;
+    /**
+     * initial
+     */
+    this.init = function() {
+        container     = $(">ul", element);
+        panes         = $(">ul>li", element);
+        pane_width    = 0;
+        pane_count    = panes.length;
+        current_pane  = 0;
 
-		this.setPaneDimensions();
-		this.enable();
+        this.setPaneDimensions();
+        this.enable();
 
-		element.hammer().on("release dragleft dragright swipeleft swiperight", handleHammer);
+        element.hammer().on("release dragleft dragright swipeleft swiperight", handleHammer);
 
-		return this;
-	};
+        return this;
+    };
 
-	/**
-	 * Disable carousel
-	 */
-	this.disable = function(){
-		enabled = false;
+    /**
+     * Disable carousel
+     */
+    this.disable = function(){
+        enabled = false;
 
-		return this;
-	};
+        return this;
+    };
 
-	/**
-	 * Enable carousel
-	 */
-	this.enable = function(){
-		enabled = true;
+    /**
+     * Enable carousel
+     */
+    this.enable = function(){
+        enabled = true;
 
-		return this;
-	};
+        return this;
+    };
 
-	/**
-	 * set the pane dimensions and scale the container
-	 */
-	this.setPaneDimensions = function() {
-		var height = $('div.chartContainer', panes[0]).height();
-		pane_width = element.width();
+    /**
+     * set the pane dimensions and scale the container
+     */
+    this.setPaneDimensions = function() {
+        var height = $('div.chartContainer', panes[0]).height();
+        pane_width = element.width();
 
-		panes.each(function() {
-			$(this).width(pane_width);
-			$(this).height(height);
-		});
+        panes.each(function() {
+            $(this).width(pane_width);
+            $(this).height(height);
+        });
 
-		container.width(pane_width*pane_count);
-		element.height(height);
+        container.width(pane_width*pane_count);
+        element.height(height);
 
-		return this;
-	};
+        return this;
+    };
 
+    /**
+     * show pane by index
+     * @param   {Number}    index
+     */
+    this.showPane = function( index ) {
+        if(!container){
+            return;
+        }
 
-	/**
-	 * show pane by index
-	 * @param   {Number}    index
-	 */
-	this.showPane = function( index ) {
-		if(!container){
-			return;
-		}
+        // between the bounds
+        index = Math.max(0, Math.min(index, pane_count-1));
+        current_pane = index;
 
-		// between the bounds
-		index = Math.max(0, Math.min(index, pane_count-1));
-		current_pane = index;
+        var offset = -((100/pane_count)*current_pane);
+        setContainerOffset(offset, true);
 
-		var offset = -((100/pane_count)*current_pane);
-		setContainerOffset(offset, true);
+        e = new CustomEvent('slide', {
+            detail: { slideNumber: current_pane },
+            bubbles: true,
+            cancelable: true
+        });
 
-		e = new CustomEvent('slide', {
-			detail: { slideNumber: current_pane },
-			bubbles: true,
-			cancelable: true
-		});
-
-		container.trigger(e);
-	};
-
-
-	function setContainerOffset(percent, animate) {
-		if(!container){
-			return;
-		}
-
-		/*if(Modernizr.csstransforms3d) {
-			container.css("transform", "translate3d("+ percent +"%,0,0) scale3d(1,1,1)");
-		}
-		else */if(Modernizr.csstransforms) {
-			container.css("transform", "translate("+ percent +"%,0)");
-		}
-		else {
-			var px = ((pane_width*pane_count) / 100) * percent;
-			container.css("left", px+"px");
-		}
-	}
-
-	this.next = function() { return this.showPane(current_pane+1, true); };
-	this.prev = function() { return this.showPane(current_pane-1, true); };
-
-	function handleHammer(ev) {
-		if(!enabled){
-			return;
-		}
-
-		// disable browser scrolling
-		ev.gesture.preventDefault();
-
-		switch(ev.type) {
-			case 'dragright':
-			case 'dragleft':
-				// stick to the finger
-				var pane_offset = -(100/pane_count)*current_pane;
-				var drag_offset = ((100/pane_width)*ev.gesture.deltaX) / pane_count;
-
-				// slow down at the first and last pane
-				if((current_pane == 0 && ev.gesture.direction == Hammer.DIRECTION_RIGHT) ||
-						(current_pane == pane_count-1 && ev.gesture.direction == Hammer.DIRECTION_LEFT)) {
-					drag_offset *= .4;
-				}
+        container[0].dispatchEvent(e);
+    };
 
 
+    function setContainerOffset(percent) {
+        if(!container){
+            return;
+        }
 
-				setContainerOffset(drag_offset + pane_offset);
-				break;
+        if(Modernizr.csstransforms) {
+            container.css("transform", "translate("+ percent +"%,0)");
+        }
+        else {
+            var px = ((pane_width*pane_count) / 100) * percent;
+            container.css("left", px+"px");
+        }
+    }
 
-			case 'swipeleft':
-				self.next();
-				ev.gesture.stopDetect();
-				break;
+    this.next = function() { return this.showPane(current_pane+1, true); };
+    this.prev = function() { return this.showPane(current_pane-1, true); };
 
-			case 'swiperight':
-				self.prev();
-				ev.gesture.stopDetect();
-				break;
+    function handleHammer(ev) {
+        if(!enabled){
+            return;
+        }
 
-			case 'release':
+        // disable browser scrolling
+        ev.gesture.preventDefault();
 
-				// more then 50% moved, navigate
-				var offset = Math.abs(ev.gesture.deltaX);
-				if(offset > pane_width/2) {
-					if(ev.gesture.direction == 'right') {
-						self.prev();
-					} else {
-						self.next();
-					}
-				}else {
-					self.showPane(current_pane, true);
-				}
-				break;
-		}
-	}
+        switch(ev.type) {
+            case 'dragright':
+            case 'dragleft':
+                // stick to the finger
+                var pane_offset = -(100/pane_count)*current_pane;
+                var drag_offset = ((100/pane_width)*ev.gesture.deltaX) / pane_count;
+
+                // slow down at the first and last pane
+                if((current_pane == 0 && ev.gesture.direction == Hammer.DIRECTION_RIGHT) ||
+                    (current_pane == pane_count-1 && ev.gesture.direction == Hammer.DIRECTION_LEFT)) {
+                    drag_offset *= .4;
+                }
+
+                setContainerOffset(drag_offset + pane_offset);
+                break;
+
+            case 'swipeleft':
+                self.next();
+                ev.gesture.stopDetect();
+                break;
+
+            case 'swiperight':
+                self.prev();
+                ev.gesture.stopDetect();
+                break;
+
+            case 'release':
+
+                // more then 50% moved, navigate
+                var offset = Math.abs(ev.gesture.deltaX);
+
+                if(offset > pane_width/2) {
+                    if(ev.gesture.direction == 'right') {
+                        self.prev();
+                    } else {
+                        self.next();
+                    }
+                }else {
+                    self.showPane(current_pane, true);
+                }
+
+                break;
+        }
+    }
 }
