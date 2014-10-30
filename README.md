@@ -5,7 +5,7 @@ This Mobile Webapp is a proof-of-concept of mixing D3.js with a touch UI. The ap
 
 [Demo](http://marmelab.github.io/MobileAudience/)
 
-<a href="http://vimeo.com/67210593"><img alt="D3.js on mobile devices: TV Audience webapp demo" title="D3.js on mobile devices: TV Audience webapp demo" src="http://marmelab.com/img/MobileAudience.png"></a>
+<a href="http://vimeo.com/67210593"><img alt="D3.js on mobile devices: TV Audience webapp demo" title="D3.js on mobile devices: TV Audience webapp demo" src="http://marmelab.com/images/MobileAudience.png"></a>
 
 Made with D3.js, Bootstrap 3, jQuery 2, hammer.js, and a few other JS libs. The Data is purely fictionnal.
 
@@ -22,7 +22,7 @@ Read a detailed feedback on the development of this prototype on our blog: [Buil
 * Don't use SVG on D3.js. Performance is abysmall on Mobile devices. Instead, use HTML (divs) and CSS.
 * Don't try to reimplement zoom using iScroll. Performance is poor on old mobile devices, and on heavy pages. Instead, rely on native zoom.
 * Use fastclick to get a more responsive app
-* Don't use a fancy layout with movable sidebars and fixed headers if you intend to have one pane supporting zoom. Make the layour simple.
+* Don't use a fancy layout with movable sidebars and fixed headers if you intend to have one pane supporting zoom. Make the layout simple.
 * Prepare for a looong period of testing
 
 Authors
