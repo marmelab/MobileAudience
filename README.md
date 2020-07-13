@@ -1,6 +1,16 @@
 MobileAudience
 ==============
 
+<table>
+        <tr>
+            <td><img width="60" src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/book.svg" alt="publication" /></td>
+            <td><strong>Archived Repository</strong><br />
+            The code of this repository was written to illustrate the blog post <a href="https://marmelab.com/MobileAudience/">Audience TV</a><br />
+        <strong>This code is not intended to be used in production, and is not maintained.</strong>
+        </td>
+        </tr>
+</table>
+
 This Mobile Webapp is a proof-of-concept of mixing D3.js with a touch UI. The application shows TV audience and market shares for 8 TV channels across several days. The UI accepts touch gestures like tap to select, drag to scroll, pinch to zoom, and swipe to change day. The interface is in French, and the data is fake.
 
 [Demo](http://marmelab.github.io/MobileAudience/)
